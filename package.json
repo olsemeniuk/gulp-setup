@@ -1,0 +1,23 @@
+{
+  "name": "gulp_setup",
+  "version": "1.0.0",
+  "scripts": {},
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "del": "^7.1.0",
+    "gulp": "^5.0.0",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-pug": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-terser": "^2.1.0",
+    "sass": "^1.72.0"
+  },
+  "browserslist": [
+    "last 10 versions",
+    "> 0.2%",
+    "not dead"
+  ]
+}
