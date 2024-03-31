@@ -8,12 +8,15 @@
     "del": "^7.1.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^9.0.0",
+    "gulp-avif": "^1.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^9.0.0",
+    "gulp-newer": "^1.4.0",
     "gulp-pug": "^5.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-terser": "^2.1.0",
+    "gulp-webp": "^5.0.0",
     "sass": "^1.72.0"
   },
   "browserslist": [

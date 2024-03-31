@@ -24,6 +24,10 @@ import {deleteAsync} from "del";
 import pug from "gulp-pug";
 // images
 import imagemin from "gulp-imagemin";
+import gulpWebp from "gulp-webp";
+import gulpAvif from "gulp-avif";
+// newer plugin
+import newer from "gulp-newer";
 
 // paths
 const paths = {
@@ -78,6 +82,27 @@ function html() {
         .pipe(gulpBrowserSync.stream());
 }
 
+function imagesToAvif() {
+    return src([paths.images.src, "!./app/images/src/**/*.svg"])
+        .pipe(newer(paths.images.dest))
+        .pipe(gulpAvif({quality: 50}))
+        .pipe(dest(paths.images.dest));
+}
+
+function imagesToWebp() {
+    return src(paths.images.src)
+        .pipe(newer(paths.images.dest))
+        .pipe(gulpWebp())
+        .pipe(dest(paths.images.dest));
+}
+
+function images() {
+    return src(paths.images.src)
+        .pipe(newer(paths.images.dest))
+        .pipe(imagemin())
+        .pipe(dest(paths.images.dest))
+        .pipe(gulpBrowserSync.stream());
+}
 
 function watching() {
     gulpBrowserSync.init({
@@ -89,7 +114,11 @@ function watching() {
     watch(paths.styles.src, styles);
     watch(paths.scripts.src, scripts);
     watch(paths.pug.src, html);
+    watch(paths.images.src, images);
 }
 
-export {clean}
-export default series(clean, parallel(html, styles, scripts), watching);
+
+const build = series(clean, parallel(html, styles, scripts, imagesToAvif, imagesToWebp, images));
+const dev = series(parallel(html, styles, scripts, imagesToAvif, imagesToWebp, images), watching);
+
+export {clean, build, dev};
