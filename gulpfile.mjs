@@ -1,6 +1,6 @@
 // import gulp
 import gulp from "gulp";
-const {series, parallel, src, dest, watch} = gulp;
+const { series, parallel, src, dest, watch } = gulp;
 
 // import plugins
 // sass
@@ -19,7 +19,7 @@ const gulpBrowserSync = browserSync.create();
 // autoprefixer
 import autoprefixer from "gulp-autoprefixer";
 // delete files
-import {deleteAsync} from "del";
+import { deleteAsync } from "del";
 // pug
 import pug from "gulp-pug";
 // images
@@ -57,7 +57,7 @@ function clean() {
 function styles() {
     return src(paths.styles.src)
         .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: "compressed"}).on("error", sass.logError))
+        .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
         .pipe(autoprefixer())
         .pipe(concat("style.min.css"))
         .pipe(sourcemaps.write("./"))
@@ -76,24 +76,18 @@ function scripts() {
 }
 
 function html() {
-    return src(paths.pug.src)
-        .pipe(pug())
-        .pipe(dest(paths.pug.dest))
-        .pipe(gulpBrowserSync.stream());
+    return src(paths.pug.src).pipe(pug()).pipe(dest(paths.pug.dest)).pipe(gulpBrowserSync.stream());
 }
 
 function imagesToAvif() {
-    return src([paths.images.src, "!./app/images/src/**/*.svg"])
+    return src([paths.images.src, "!./app/images/**/*.svg"])
         .pipe(newer(paths.images.dest))
-        .pipe(gulpAvif({quality: 50}))
+        .pipe(gulpAvif({ quality: 50 }))
         .pipe(dest(paths.images.dest));
 }
 
 function imagesToWebp() {
-    return src(paths.images.src)
-        .pipe(newer(paths.images.dest))
-        .pipe(gulpWebp())
-        .pipe(dest(paths.images.dest));
+    return src(paths.images.src).pipe(newer(paths.images.dest)).pipe(gulpWebp()).pipe(dest(paths.images.dest));
 }
 
 function images() {
@@ -117,8 +111,7 @@ function watching() {
     watch(paths.images.src, images);
 }
 
-
 const build = series(clean, parallel(html, styles, scripts, imagesToAvif, imagesToWebp, images));
 const dev = series(parallel(html, styles, scripts, imagesToAvif, imagesToWebp, images), watching);
 
-export {clean, build, dev};
+export { clean, build, dev };
