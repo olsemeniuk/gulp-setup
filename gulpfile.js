@@ -8,11 +8,18 @@ const concat = require("gulp-concat");
 const pug = require("gulp-pug");
 const terser = require("gulp-terser");
 const browserSync = require("browser-sync").create();
+const gulpAvif = require("gulp-avif");
+const newer = require("gulp-newer");
+const fonter = require("gulp-fonter");
+// import ttf2woff2 from 'gulp-ttf2woff2';
 
 // files
 const styleFiles = ["app/sass/styles.sass"];
 const pugFiles = ["app/*.pug"];
 const jsFiles = ["app/js/script.js"];
+const imagesFiles = ["app/images/**/*"];
+const imagesDest = "dist/images";
+const fontsFiles = 
 
 // tasks
 function managePugFiles() {
@@ -39,18 +46,49 @@ function manageJSFiles() {
     .pipe(dest("dist/js"));
 }
 
-function autoReload() {
+function imagesToAvif() {
+  return src([...imagesFiles, "!app/images/**/*.svg"], {
+    base: "app/images",
+    encoding: false,
+  })
+    .pipe(newer(imagesDest))
+    .pipe(gulpAvif({ quality: 50 }))
+    .pipe(dest(imagesDest));
+}
+
+async function imagesToWebp() {
+  const webp = (await import("gulp-webp")).default;
+  return src(imagesFiles, {
+    base: "app/images",
+    encoding: false,
+  })
+    .pipe(newer(imagesDest))
+    .pipe(webp())
+    .pipe(dest(imagesDest));
+}
+
+async function imagesImagemin() {
+  const imagemin = (await import("gulp-imagemin")).default;
+  return src(imagesFiles, {
+    base: "app/images",
+    encoding: false,
+  })
+    .pipe(newer(imagesDest))
+    .pipe(imagemin())
+    .pipe(dest(imagesDest));
+}
+
+function watching() {
   browserSync.init({
     server: {
       baseDir: "dist",
     },
   });
-}
 
-function watching() {
   watch(pugFiles, managePugFiles);
   watch(styleFiles, manageStyleFiles);
   watch(jsFiles, manageJSFiles);
+  watch(imagesFiles, parallel(imagesToAvif, imagesToWebp, imagesImagemin));
   watch("dist/**/*").on("change", browserSync.reload);
 }
 
@@ -59,12 +97,20 @@ async function cleanDist() {
   return deleteAsync(["dist/**/*"]);
 }
 
+// exports
 exports.clean = cleanDist;
-exports.build = series(cleanDist, managePugFiles, manageStyleFiles, manageJSFiles);
+exports.build = series(
+  cleanDist,
+  managePugFiles,
+  manageStyleFiles,
+  manageJSFiles,
+  parallel(imagesToAvif, imagesToWebp, imagesImagemin)
+);
 exports.default = series(
   cleanDist,
   managePugFiles,
   manageStyleFiles,
   manageJSFiles,
-  parallel(watching, autoReload)
+  parallel(imagesToAvif, imagesToWebp, imagesImagemin),
+  watching
 );
