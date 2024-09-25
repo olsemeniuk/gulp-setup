@@ -1,7 +1,4 @@
-// gulp
 const { src, dest, series, watch, parallel } = require("gulp");
-
-// general purpose plugins
 const sourcemaps = require("gulp-sourcemaps");
 const concat = require("gulp-concat");
 
@@ -86,11 +83,10 @@ const newer = require("gulp-newer");
 const imagesFiles = ["app/images/**/*"];
 const imagesDest = "dist/images";
 // tasks
+const imagesSrcParams = { encoding: false };
+
 function imagesToAvif() {
-  return src([...imagesFiles, "!app/images/**/*.svg"], {
-    base: "app/images",
-    encoding: false,
-  })
+  return src([...imagesFiles, "!app/images/**/*.svg"], imagesSrcParams)
     .pipe(newer(imagesDest))
     .pipe(gulpAvif({ quality: 50 }))
     .pipe(dest(imagesDest));
@@ -98,10 +94,7 @@ function imagesToAvif() {
 
 async function imagesToWebp() {
   const webp = (await import("gulp-webp")).default;
-  return src(imagesFiles, {
-    base: "app/images",
-    encoding: false,
-  })
+  return src(imagesFiles, imagesSrcParams)
     .pipe(newer(imagesDest))
     .pipe(webp())
     .pipe(dest(imagesDest));
@@ -109,10 +102,7 @@ async function imagesToWebp() {
 
 async function imagesImagemin() {
   const imagemin = (await import("gulp-imagemin")).default;
-  return src(imagesFiles, {
-    base: "app/images",
-    encoding: false,
-  })
+  return src(imagesFiles, imagesSrcParams)
     .pipe(newer(imagesDest))
     .pipe(imagemin())
     .pipe(dest(imagesDest));
@@ -136,15 +126,17 @@ const fonter = require("gulp-fonter");
 const fontsFiles = "app/fonts/**/*";
 const fontsDest = "dist/fonts";
 // tasks
+const fontsSrcParams = { encoding: false, removeBOM: false };
+
 function fontsToWoff() {
-  return src(fontsFiles, { encoding: false, removeBOM: false })
+  return src(fontsFiles, fontsSrcParams)
     .pipe(fonter({ formats: ["woff", "ttf"] }))
     .pipe(dest(fontsDest));
 }
 
 async function fontsToWoff2() {
   const ttf2woff2 = (await import("gulp-ttf2woff2")).default;
-  return src(`${fontsDest}/**/*.ttf`, { encoding: false, removeBOM: false })
+  return src(`${fontsDest}/**/*.ttf`, fontsSrcParams)
     .pipe(ttf2woff2())
     .pipe(dest(fontsDest));
 }
