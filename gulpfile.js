@@ -160,9 +160,7 @@ const browserSync = require("browser-sync").create();
 // tasks
 function watching() {
   browserSync.init({
-    server: {
-      baseDir: "dist",
-    },
+    server: { baseDir: "dist" },
   });
 
   watch(pugFiles, managePugFiles);
@@ -185,7 +183,6 @@ async function cleanDist() {
 }
 
 // exports
-exports.pug = managePugFiles;
 exports.clean = cleanDist;
 exports.build = series(
   cleanDist,

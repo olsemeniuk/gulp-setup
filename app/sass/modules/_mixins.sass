@@ -1,0 +1,18 @@
+@use 'modules/variables' as vars
+
+// media
+@mixin media_desktop
+  @media (max-width: vars.$breakpoint_xl)
+    @content
+
+@mixin media_laptop
+  @media (max-width: vars.$breakpoint_l)
+    @content
+
+@mixin media_tablet
+  @media (max-width: vars.$breakpoint_m)
+    @content
+
+@mixin media_phone
+  @media (max-width: vars.$breakpoint_s)
+    @content
