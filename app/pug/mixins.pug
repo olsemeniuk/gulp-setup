@@ -1,0 +1,11 @@
+mixin addPicture(image)
+  picture
+    source(type="image/avif", srcset= image.avifSrc)
+    source(type="image/webp", srcset= image.webpSrc)
+    img(
+      class= image.class
+      src= image.src,
+      alt= image.alt,
+      width= image.width,
+      height= image.height
+    )
