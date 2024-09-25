@@ -1,0 +1,5 @@
+{
+  "quoteProps": "as-needed",
+  "bracketSameLine": true,
+  "arrowParens": "avoid"
+}
