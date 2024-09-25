@@ -13,7 +13,9 @@ const pug = require("gulp-pug");
 const pugFiles = ["app/*.pug"];
 // tasks
 function managePugFiles() {
-  return src(pugFiles).pipe(pug()).pipe(dest("dist"));
+  return src(pugFiles)
+    .pipe(pug({ basedir: "app" }))
+    .pipe(dest("dist"));
 }
 /*
  * ==================
@@ -183,6 +185,7 @@ async function cleanDist() {
 }
 
 // exports
+exports.pug = managePugFiles;
 exports.clean = cleanDist;
 exports.build = series(
   cleanDist,
@@ -190,7 +193,7 @@ exports.build = series(
   manageStyleFiles,
   manageJSFiles,
   manageFonts,
-  manageImages
+  manageImages,
 );
 exports.default = series(
   cleanDist,
@@ -199,5 +202,5 @@ exports.default = series(
   manageJSFiles,
   manageFonts,
   manageImages,
-  watching
+  watching,
 );

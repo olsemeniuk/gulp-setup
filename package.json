@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "browserslist": "last 10 versions",
-  "scripts": {},
+  "scripts": {
+    "format": "npx prettier --write app/js/**/*.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "gulp-terser": "^2.1.0",
     "gulp-ttf2woff2": "^5.0.0",
     "gulp-webp": "^5.0.0",
+    "prettier": "3.3.3",
     "sass": "^1.79.3"
   }
 }

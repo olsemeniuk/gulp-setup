@@ -1,5 +1,5 @@
 {
-  "quoteProps": "as-needed",
+  "quoteProps": "consistent",
   "bracketSameLine": true,
   "arrowParens": "avoid"
 }
