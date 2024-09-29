@@ -1,15 +1,11 @@
 {
   "name": "gulp-setup",
   "version": "1.0.0",
-  "main": "index.js",
-  "browserslist": "last 10 versions",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "format": "npx prettier --write app/js/**/*.js"
+    "format": "prettier --write app/js/**/*.js"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "browser-sync": "^3.0.3",
     "del": "^7.1.0",
