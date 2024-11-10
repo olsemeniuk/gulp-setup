@@ -1,10 +1,21 @@
-include /pug/mixins.pug
+include ../mixins.pug
 
 doctype html
 html(lang="en")
-  include /pug/includes/head
-  body
-    include /pug/includes/header
-    block main
-      main.main
-    include /pug/includes/footer
+head
+  block metadata
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  block title
+    title Document
+  block links
+    link(rel="stylesheet", href="css/styles.min.css")
+body
+  block header
+    header.header
+  block main
+    main.main
+  block footer
+    footer.footer
+  block scripts
+    script(src="js/script.min.js")
