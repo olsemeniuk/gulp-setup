@@ -1,11 +1,11 @@
-mixin addPicture(image)
+mixin addPicture(imgAvifSrc, imgWebpSrc, imgClass, imgSrc, imgAlt, imgWidth, imgHeight)
   picture
-    source(type="image/avif", srcset= image.avifSrc)
-    source(type="image/webp", srcset= image.webpSrc)
+    source(type="image/avif", srcset= imgAvifSrc)
+    source(type="image/webp", srcset= imgWebpSrc)
     img(
-      class= image.class
-      src= image.src,
-      alt= image.alt,
-      width= image.width,
-      height= image.height
+      class= imgClass
+      src= imgSrc,
+      alt= imgAlt,
+      width= imgWidth,
+      height= imgHeight
     )

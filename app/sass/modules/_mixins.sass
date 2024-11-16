@@ -1,4 +1,4 @@
-@use 'variables' as vars
+@use "variables" as vars
 
 // media
 @mixin media_desktop
@@ -21,7 +21,11 @@
 @mixin addFont($fontFamily, $fontUrlWoff2, $fontUrlWoff, $fontWeight: 400, $fontStyle: normal)
   @font-face
     font-family: $fontFamily
-    src: url($fontUrlWoff2) format('woff2'), url($fontUrlWoff) format('woff')
+    src: local($fontFamily), url($fontUrlWoff2) format("woff2"), url($fontUrlWoff) format("woff")
     font-weight: $fontWeight
     font-style: $fontStyle
     font-display: swap
+
+// background
+@mixin background($url, $size: contain, $position: center)
+  background: url($url) $position/$size no-repeat

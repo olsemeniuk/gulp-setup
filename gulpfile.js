@@ -1,4 +1,4 @@
-const { src, dest, series, watch, parallel } = require("gulp");
+const {src, dest, series, watch, parallel} = require("gulp");
 const sourcemaps = require("gulp-sourcemaps");
 const concat = require("gulp-concat");
 
@@ -11,12 +11,14 @@ const concat = require("gulp-concat");
 const pug = require("gulp-pug");
 // files
 const pugFiles = ["app/*.pug"];
+
 // tasks
 function managePugFiles() {
   return src(pugFiles)
-    .pipe(pug({ basedir: "app" }))
+    .pipe(pug({basedir: "app"}))
     .pipe(dest("dist"));
 }
+
 /*
  * ==================
  * PUG END
@@ -32,17 +34,19 @@ function managePugFiles() {
 const sass = require("gulp-sass")(require("sass"));
 // files
 const styleFiles = ["app/sass/styles.sass"];
+
 // tasks
 async function manageStyleFiles() {
   const autoprefixer = (await import("gulp-autoprefixer")).default;
   return src(styleFiles)
     .pipe(sourcemaps.init())
-    .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
+    .pipe(sass({outputStyle: "compressed"}).on("error", sass.logError))
     .pipe(concat("styles.min.css"))
     .pipe(autoprefixer())
     .pipe(sourcemaps.write("../maps"))
     .pipe(dest("dist/css"));
 }
+
 /*
  * ==================
  * STYLES END
@@ -58,6 +62,7 @@ async function manageStyleFiles() {
 const terser = require("gulp-terser");
 // files
 const jsFiles = ["app/js/script.js"];
+
 // tasks
 function manageJSFiles() {
   return src(jsFiles)
@@ -67,6 +72,7 @@ function manageJSFiles() {
     .pipe(sourcemaps.write("../maps"))
     .pipe(dest("dist/js"));
 }
+
 /*
  * ==================
  * JS END
@@ -85,12 +91,12 @@ const newer = require("gulp-newer");
 const imagesFiles = ["app/images/**/*"];
 const imagesDest = "dist/images";
 // tasks
-const imagesSrcParams = { encoding: false };
+const imagesSrcParams = {encoding: false};
 
 function imagesToAvif() {
-  return src([...imagesFiles, "!app/images/**/*.svg"], imagesSrcParams)
+  return src(imagesFiles, imagesSrcParams)
     .pipe(newer(imagesDest))
-    .pipe(gulpAvif({ quality: 50 }))
+    .pipe(gulpAvif({quality: 50}))
     .pipe(dest(imagesDest));
 }
 
@@ -128,11 +134,11 @@ const fonter = require("gulp-fonter");
 const fontsFiles = "app/fonts/**/*";
 const fontsDest = "dist/fonts";
 // tasks
-const fontsSrcParams = { encoding: false, removeBOM: false };
+const fontsSrcParams = {encoding: false, removeBOM: false};
 
 function fontsToWoff() {
   return src(fontsFiles, fontsSrcParams)
-    .pipe(fonter({ formats: ["woff", "ttf"] }))
+    .pipe(fonter({formats: ["woff", "ttf"]}))
     .pipe(dest(fontsDest));
 }
 
@@ -157,10 +163,11 @@ const manageFonts = series(fontsToWoff, fontsToWoff2);
  */
 // plugins
 const browserSync = require("browser-sync").create();
+
 // tasks
 function watching() {
   browserSync.init({
-    server: { baseDir: "dist" },
+    server: {baseDir: "dist"},
   });
 
   watch(pugFiles, managePugFiles);
@@ -170,6 +177,7 @@ function watching() {
   watch(imagesFiles, manageImages);
   watch("dist/**/*").on("change", browserSync.reload);
 }
+
 /*
  * ==================
  * WATCHING END
@@ -178,8 +186,8 @@ function watching() {
 
 // clean dist folder
 async function cleanDist() {
-  const { deleteAsync } = await import("del");
-  return deleteAsync(["dist/**/*", "!dist/.gitkeep"]);
+  const {deleteAsync} = await import("del");
+  return deleteAsync("dist/**/*");
 }
 
 // exports
